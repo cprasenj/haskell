@@ -127,14 +127,15 @@ main = hspec $ do
     it "should give [1,2,3,4,5] for List [Elem 1, List [Elem 2, List [Elem 3, Elem 4], Elem 5]])" $ do
       flatten (List [Elem 1, List [Elem 2, List [Elem 3, Elem 4], Elem 5]]) `shouldBe` [1, 2, 3, 4, 5]
 
-  describe "compress" $ do
+  describe "unique" $ do
 
     it "should give abcd for aaabbbcccddd" $ do
-      compress "aaabbbcccddd" `shouldBe` "abcd"
+      unique "aaabbbcccddd" `shouldBe` "abcd"
 
     it "should give [1, 2, 3, 4]for [1, 2, 3, 4]" $ do
-      compress [1, 2, 3, 4] `shouldBe` ([1, 2, 3, 4] :: [Integer])
-      compress [1,2,1] `shouldMatchList` [1,2]
+      unique [1, 2, 3, 4] `shouldBe` ([1, 2, 3, 4] :: [Integer])
+      unique [1,2,1] `shouldMatchList` [1,2]
+      unique [1,2,1,2] `shouldMatchList` [1,2]
 
   describe "createPack" $ do
 
@@ -173,3 +174,13 @@ main = hspec $ do
 
     it "should give [1,2,1,3,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0] for [(4,1), (3,2), (3,3), (2,4), (2,5), (2,6), (2,7), (2,8), (2,9), (2,0)]" $ do
       encode [1,2,1,3,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0] `shouldMatchList` [(4,1), (3,2), (3,3), (2,4), (2,5), (2,6), (2,7), (2,8), (2,9), (2,0)]
+
+    describe "compress" $ do
+
+      it "should give abcd for aaabbbcccddd" $ do
+        unique "aaabbbcccddd" `shouldBe` "abcd"
+
+      -- it "should give [1, 2, 3, 4]for [1, 2, 3, 4]" $ do
+      --   unique [1, 2, 3, 4] `shouldBe` ([1, 2, 3, 4] :: [Integer])
+      --   unique [1,2,1] `shouldMatchList` [1,2]
+      --   unique [1,2,1,2] `shouldMatchList` [1,2]
