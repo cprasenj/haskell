@@ -16,3 +16,10 @@ parse fileString
   |length fileString == 0 = error "empty file"
   |otherwise = map parseMessage linesOfFile
   where linesOfFile = lines fileString
+
+insert1 :: (Ord LogMessage) => MessageTree -> LogMessage -> MessageTree
+insert1 Leaf x = Node Leaf x Leaf
+insert1 (Node t1 v t2) x
+	| v == x = Node t1 v t2
+	| v  < x = Node t1 v (insert1 t2 x)
+	| v  > x = Node (insert1 t1 x) v t2

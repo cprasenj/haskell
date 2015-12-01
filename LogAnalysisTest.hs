@@ -25,4 +25,4 @@ module LogAnalysisTest where
     describe "parse" $ do
 
       it "should create Logmessage for the given string" $ do
-        parse "E 2 562 help help\nI 29 la la la" `shouldBe` [LogMessage (Error 2) 562 "help help", LogMessage Info 29 "la la la"]
+        parse "E 2 562 help help\nI 29 la la la" `shouldBe` [LogMessage (Error 2) 562 "help help", LogMessage Info 29 "la la la"]  
