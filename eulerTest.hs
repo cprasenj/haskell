@@ -71,3 +71,11 @@ main = hspec $ do
 
         it "should give 4613732 for 1 2 2 fibonachi isEven" $ do
             createSumOfFilteredList 1 2 3999999 fibonachi isEven `shouldBe` 4613732
+
+    describe "largestPrimeFactor" $ do
+
+        it "should give 29 for 13195" $ do
+            largestPrimeFactor 13195 `shouldBe` 29
+
+        it "should give 6857 for 600851475143" $ do
+            largestPrimeFactor 600851475143 `shouldBe` 6857

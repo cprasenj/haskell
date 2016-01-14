@@ -29,3 +29,18 @@ isEven number = number `mod` 2 == 0
 
 createSumOfFilteredList :: Integer -> Integer -> Integer -> (Integer -> Integer-> Integer -> [Integer]) -> (Integer -> Bool) -> Integer
 createSumOfFilteredList start end limit listCreator predicate  = foldl (+) 0 (filter predicate (listCreator start end limit))
+
+sieve :: (Integral a) => [a] -> [a]
+sieve (n:ns) = n : sieve ns'
+  where ns' = filter ((/= 0) . flip rem n) (n:ns)
+
+isDivisible :: (Integral a) => a -> a -> Bool
+isDivisible number1 number2 = number1 `mod` number2 == 0
+
+
+largestPrimeFactor :: Integer -> Integer
+largestPrimeFactor number = head (reverse (filter predicate (takeWhile (< round (sqrt(fromIntegral number)/2)) (sieve [2..]))))
+                            where predicate = isDivisible number
+
+
+
