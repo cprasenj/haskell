@@ -1,4 +1,5 @@
 module Euler where
+import Data.List
 
 multipleOf3Or5 :: Integer -> Bool
 multipleOf3Or5 a =
@@ -48,12 +49,21 @@ reverseInt x = (*) (signum x) . read . reverse . show . abs  $ x
 isPalindrome :: Integer -> Bool
 isPalindrome number = number == reverseInt number
 
---palindromeFinder :: Integer -> Integer -> [Integer]
---palindromeFinder first second = if
---
---largestPalindromeProduct :: Integer -> Integer
---largestPalindromeProduct number = (limit -1)
---                          where limit = 10 ** number
+palindromeFinder :: Integer -> Integer -> Integer -> [Integer] -> [Integer]
+palindromeFinder first second limit palindromeList =
+                                               if first == 1 && second == 1
+                                               then palindromeList
+                                               else if second == 1 && isPalindrome potentialPalindrome
+                                               then palindromeFinder (first-1) limit limit (palindromeList ++ [potentialPalindrome])
+                                               else if second == 1
+                                               then palindromeFinder (first-1) limit limit palindromeList
+                                               else if isPalindrome potentialPalindrome
+                                               then palindromeFinder first (second-1) limit (palindromeList ++ [potentialPalindrome])
+                                               else palindromeFinder first (second-1) limit palindromeList
+                                               where potentialPalindrome = first * second
+
+largestPalindromeProduct :: Integer -> Integer
+largestPalindromeProduct number = head (reverse (sort (palindromeFinder number number number [])))
 
 
 

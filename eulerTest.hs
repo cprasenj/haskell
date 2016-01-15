@@ -92,3 +92,12 @@ main = hspec $ do
         it "should give True for 123" $ do
             isPalindrome 323 `shouldBe` True
 
+    describe "largestPalindromeProduct" $ do
+
+        it "should give 9009 for 99" $ do
+            largestPalindromeProduct 99 `shouldBe` 9009
+
+        it "should give 906609 for 999" $ do
+            largestPalindromeProduct 999 `shouldBe` 906609
+
+
