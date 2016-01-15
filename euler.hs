@@ -42,5 +42,18 @@ largestPrimeFactor :: Integer -> Integer
 largestPrimeFactor number = head (reverse (filter predicate (takeWhile (< round (sqrt(fromIntegral number)/2)) (sieve [2..]))))
                             where predicate = isDivisible number
 
+reverseInt :: Integer -> Integer
+reverseInt x = (*) (signum x) . read . reverse . show . abs  $ x
+
+isPalindrome :: Integer -> Bool
+isPalindrome number = number == reverseInt number
+
+--palindromeFinder :: Integer -> Integer -> [Integer]
+--palindromeFinder first second = if
+--
+--largestPalindromeProduct :: Integer -> Integer
+--largestPalindromeProduct number = (limit -1)
+--                          where limit = 10 ** number
+
 
 

@@ -77,5 +77,18 @@ main = hspec $ do
         it "should give 29 for 13195" $ do
             largestPrimeFactor 13195 `shouldBe` 29
 
-        it "should give 6857 for 600851475143" $ do
-            largestPrimeFactor 600851475143 `shouldBe` 6857
+--        it "should give 6857 for 600851475143" $ do
+--            largestPrimeFactor 600851475143 `shouldBe` 6857
+
+    describe "largestPrimeFactor" $ do
+        it "should reverse a given Integer 123 -> 321" $ do
+            reverseInt 123 `shouldBe` 321
+
+    describe "isPalindrome" $ do
+
+        it "should give False for 123" $ do
+            isPalindrome 123 `shouldBe` False
+
+        it "should give True for 123" $ do
+            isPalindrome 323 `shouldBe` True
+
