@@ -65,5 +65,16 @@ palindromeFinder first second limit palindromeList =
 largestPalindromeProduct :: Integer -> Integer
 largestPalindromeProduct number = head (reverse (sort (palindromeFinder number number number [])))
 
+ghc :: Integer -> Integer -> Integer
+ghc number1 number2 = if number2 == 0
+                      then number1
+                      else ghc number2 (number1 `mod` number2)
 
+lcm :: Integer -> Integer -> Integer
+lcm number1 number2 = round ((fromInteger (number1 * number2)) / (fromInteger (ghc number1 number2)))
+
+smallestNumberDivisibleByRange :: Integer -> Integer -> Integer
+smallestNumberDivisibleByRange limit initial = if limit == 1
+                                           then initial
+                                           else smallestNumberDivisibleByRange (limit-1) (Prelude.lcm limit initial)
 
