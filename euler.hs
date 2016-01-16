@@ -78,3 +78,16 @@ smallestNumberDivisibleByRange limit initial = if limit == 1
                                            then initial
                                            else smallestNumberDivisibleByRange (limit-1) (Prelude.lcm limit initial)
 
+squereAndSum :: Integer -> Integer -> Integer
+squereAndSum total number = total + (number * number)
+
+sumOfSquere :: Integer -> Integer
+sumOfSquere number = foldl squereAndSum 0 [1..number]
+
+squereOfSum :: Integer -> Integer
+squereOfSum number = sum * sum
+                    where sum = foldl (+) 0 [1..number]
+
+diffOfSumOfSquereAndSquereOfSum :: Integer -> Integer
+diffOfSumOfSquereAndSquereOfSum number = (squereOfSum number) - (sumOfSquere number)
+
