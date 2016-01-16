@@ -91,3 +91,7 @@ squereOfSum number = sum * sum
 diffOfSumOfSquereAndSquereOfSum :: Integer -> Integer
 diffOfSumOfSquereAndSquereOfSum number = (squereOfSum number) - (sumOfSquere number)
 
+nThPrime :: Integer -> Integer
+nThPrime number = (sieve [2..]) !! fromIntegral (number-1)
+
+

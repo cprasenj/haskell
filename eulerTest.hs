@@ -120,8 +120,16 @@ main = hspec $ do
 
     describe "diffOfSumOfSquereAndSquereOfSum" $ do
 
---        it "should give 2640 for 10" $ do
---        diffOfSumOfSquereAndSquereOfSum 10 `shouldBe` 2640
+        it "should give 2640 for 10" $ do
+        diffOfSumOfSquereAndSquereOfSum 10 `shouldBe` 2640
 
-        it "should give 25164150 for 100" $ do
-        diffOfSumOfSquereAndSquereOfSum 100 `shouldBe` 25164150
+--        it "should give 25164150 for 100" $ do
+--        diffOfSumOfSquereAndSquereOfSum 100 `shouldBe` 25164150
+
+    describe "nThPrime" $ do
+
+--        it "should give 13 for 6" $ do
+--        nThPrime 6 `shouldBe` 13
+
+        it "should give 104743 for 10001" $ do
+        nThPrime 10001 `shouldBe` 104743
