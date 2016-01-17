@@ -112,5 +112,17 @@ productOfNNumbers len multVal list =
     else productOfNNumbers len multVal (tail list)
     where newVal = foldl (*) 1 (lastN (fromIntegral len) (reverse list))
 
+numPairListCreator :: Integer -> Integer -> [[Integer]] -> [[Integer]]
+numPairListCreator first second initialLIst =
+    if second == 1
+    then initialLIst
+    else numPairListCreator (first+1) (second-1) ([[first, second]] ++ initialLIst)
+
+numPairList :: Integer -> [[Integer]]
+numPairList sum = numPairListCreator 1 (sum-1) [[]]
+
+--pythagoreanTripletFinder :: Integer -> Integer -> [Integer]
+--pythagoreanTripletFinder sum initial = if
+
 
 
