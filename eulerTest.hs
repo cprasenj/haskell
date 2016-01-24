@@ -174,3 +174,11 @@ main = hspec $ do
     describe "pythagoreanTripletProduct" $ do
         it "should give 31875000 for 1000" $ do
             pythagoreanTripletProduct 1000 `shouldBe` 31875000
+
+    describe "sumOfPrimes" $ do
+        it "should give 17 for 10" $ do
+            sumOfPrimes 10 `shouldBe` 17
+
+    describe "sumOfPrimes" $ do
+        it "should give 17 for 1000000" $ do
+            sumOfPrimes 1000000 `shouldBe` 17
