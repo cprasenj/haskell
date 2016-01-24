@@ -112,17 +112,18 @@ productOfNNumbers len multVal list =
     else productOfNNumbers len multVal (tail list)
     where newVal = foldl (*) 1 (lastN (fromIntegral len) (reverse list))
 
-numPairListCreator :: Integer -> Integer -> [[Integer]] -> [[Integer]]
-numPairListCreator first second initialLIst =
-    if second == 1
-    then initialLIst
-    else numPairListCreator (first+1) (second-1) ([[first, second]] ++ initialLIst)
+pythagoreanTripletFinder :: Integer -> [[Integer]]
+pythagoreanTripletFinder sum = [[a,b,c] | m <- [2..limit],
+                        n <- [1..(m-1)],
+                        let a = m^2 - n^2,
+                        let b = 2*m*n,
+                        let c = m^2 + n^2,
+                        a+b+c==sum]
+                        where limit = (floor . sqrt . fromIntegral) sum
 
-numPairList :: Integer -> [[Integer]]
-numPairList sum = numPairListCreator 1 (sum-1) [[]]
-
---pythagoreanTripletFinder :: Integer -> Integer -> [Integer]
---pythagoreanTripletFinder sum initial = if
+--pythagoreanTripletProduct :: Integer -> Integer
+--pythagoreanTripletproduct sum = triplets !! 0 * triplets !! 1 * triplets !! 2
+--                                     where triplets = (pythagoreanTripletFinder sum) !! 0
 
 
 
