@@ -170,3 +170,7 @@ main = hspec $ do
 
         it "should give [[375,200,425]] for 1000" $ do
             pythagoreanTripletFinder 1000 `shouldBe` [[375,200,425]]
+
+    describe "pythagoreanTripletProduct" $ do
+        it "should give 31875000 for 1000" $ do
+            pythagoreanTripletProduct 1000 `shouldBe` 31875000

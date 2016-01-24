@@ -121,9 +121,9 @@ pythagoreanTripletFinder sum = [[a,b,c] | m <- [2..limit],
                         a+b+c==sum]
                         where limit = (floor . sqrt . fromIntegral) sum
 
---pythagoreanTripletProduct :: Integer -> Integer
---pythagoreanTripletproduct sum = triplets !! 0 * triplets !! 1 * triplets !! 2
---                                     where triplets = (pythagoreanTripletFinder sum) !! 0
+pythagoreanTripletProduct :: Integer -> Integer
+pythagoreanTripletProduct sum = product . head . pythagoreanTripletFinder $ sum
+
 
 
 
