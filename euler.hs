@@ -120,21 +120,21 @@ pythagoreanTripletFinder sum = [[a,b,c] | m <- [2..limit],
                         let c = m^2 + n^2,
                         a+b+c==sum]
                         where limit = (floor . sqrt . fromIntegral) sum
---primes :: [Integer]
---primes = sieve [2..]
---  where
---    sieve (p:xs) = p : sieve [x|x <- xs, x `mod` p > 0]
-
-isPrime :: Integer -> Bool
-isPrime number = all (not.(`divides` number)) [2..(number-1)]
-    where d `divides` nubmer = number `mod` d == 0
 
 pythagoreanTripletProduct :: Integer -> Integer
 pythagoreanTripletProduct sum = product . head . pythagoreanTripletFinder $ sum
 
-sumOfPrimes :: Integer -> Integer
-sumOfPrimes limit = foldl (+) 2 (filter isPrime [x | x<- [3,5..limit-1]])
+primes :: [Integer]
+primes = sieve [2..]
+  where
+    sieve (p:xs) = p : sieve [x|x <- xs, x `mod` p > 0]
 
+isPrime :: Integer -> Bool
+isPrime number = all (not.(`divides` number)) ([2]++[3,5..(number-1)])
+    where d `divides` nubmer = number `mod` d == 0
+
+sumOfPrimes :: Integer -> Integer
+sumOfPrimes limit = foldl (+) 0 (takeWhile (<limit) primes)
 
 
 
