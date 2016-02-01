@@ -134,7 +134,7 @@ isPrime number = all (not.(`divides` number)) ([2]++[3,5..(number-1)])
     where d `divides` nubmer = number `mod` d == 0
 
 sumOfPrimes :: Integer -> Integer
-sumOfPrimes limit = foldl (+) 0 (takeWhile (<limit) primes)
+sumOfPrimes limit = foldl (+) 2 (filter isPrime (takeWhile (<limit) [3,5..]))
 
 
 

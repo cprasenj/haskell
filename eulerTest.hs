@@ -179,6 +179,8 @@ main = hspec $ do
         it "should give 17 for 10" $ do
             sumOfPrimes 10 `shouldBe` 17
 
-    describe "sumOfPrimes" $ do
-        it "should give 17 for 1000000" $ do
-            sumOfPrimes 1000000 `shouldBe` 17
+--        it "should give 37550402023 for 1000000" $ do
+--            sumOfPrimes 1000000 `shouldBe` 17
+
+        it "should give 37550402023 for 2000000" $ do
+            sumOfPrimes 2000000 `shouldBe` 17
