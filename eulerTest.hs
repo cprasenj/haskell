@@ -152,8 +152,8 @@ main = hspec $ do
         it "should give 13 for 6" $ do
             nThPrime 6 `shouldBe` 13
 
---        it "should give 104743 for 10001" $ do
---            nThPrime 10001 `shouldBe` 104743
+        it "should give 104743 for 10001" $ do
+            nThPrime 10001 `shouldBe` 104743
 
     describe "productOfNNumbers" $ do
 
@@ -179,8 +179,5 @@ main = hspec $ do
         it "should give 17 for 10" $ do
             sumOfPrimes 10 `shouldBe` 17
 
---        it "should give 37550402023 for 1000000" $ do
---            sumOfPrimes 1000000 `shouldBe` 17
-
         it "should give 37550402023 for 2000000" $ do
-            sumOfPrimes 2000000 `shouldBe` 17
+            sumOfPrimes 2000000 `shouldBe` 142913828922

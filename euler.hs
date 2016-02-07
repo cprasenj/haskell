@@ -94,9 +94,6 @@ squereOfSum number = sum * sum
 diffOfSumOfSquereAndSquereOfSum :: Integer -> Integer
 diffOfSumOfSquereAndSquereOfSum number = (squereOfSum number) - (sumOfSquere number)
 
-nThPrime :: Integer -> Integer
-nThPrime number = (sieve [2..]) !! fromIntegral (number-1)
-
 lastN :: Int -> [a] -> [a]
 lastN n xs = drop (length xs - n) xs
 
@@ -125,17 +122,16 @@ pythagoreanTripletProduct :: Integer -> Integer
 pythagoreanTripletProduct sum = product . head . pythagoreanTripletFinder $ sum
 
 primes :: [Integer]
-primes = sieve [2..]
-  where
-    sieve (p:xs) = p : sieve [x|x <- xs, x `mod` p > 0]
-
-isPrime :: Integer -> Bool
-isPrime number = all (not.(`divides` number)) ([2]++[3,5..(number-1)])
-    where d `divides` nubmer = number `mod` d == 0
+primes = 2: 3: sieve (tail primes) [5,7..]
+ where
+  sieve (p:ps) xs = h ++ sieve ps [x | x <- t, x `rem` p /= 0]
+                  where (h,~(_:t)) = span (< p*p) xs
 
 sumOfPrimes :: Integer -> Integer
-sumOfPrimes limit = foldl (+) 2 (filter isPrime (takeWhile (<limit) [3,5..]))
+sumOfPrimes limit = foldl (+) 0 (takeWhile (<limit) primes)
 
+nThPrime :: Integer -> Integer
+nThPrime number = primes !! fromIntegral (number-1)
 
 
 
