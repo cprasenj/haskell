@@ -205,4 +205,4 @@ main = hspec $ do
 
     describe "sumOfPrimes" $ do
         it "should give blah for blah" $ do
-            sanitizeSeries (toInt bigNum) 13 [] `shouldBe` []
+            sanitizeSeries (toInt "123456023") 4 [] `shouldBe` [[1, 2, 3, 4], [2, 3, 4, 5], [3, 4, 5, 6]]

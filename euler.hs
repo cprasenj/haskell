@@ -107,7 +107,7 @@ sanitizeSeries numList chunkSize resultBucket =
     else if not (elem 0 chunk)
     then sanitizeSeries (tail numList) chunkSize (resultBucket ++ [chunk] )
     else sanitizeSeries (tail numList) chunkSize (resultBucket)
-    where chunk = take 13 numList
+    where chunk = take (fromIntegral chunkSize) numList
 
 productOfNumberLists :: [[Integer]] -> Integer -> Integer
 productOfNumberLists numLists multVal = if (length numLists) == 0
