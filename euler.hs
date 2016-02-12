@@ -100,23 +100,34 @@ lastN n xs = drop (length xs - n) xs
 toInt :: [Char] -> [Integer]
 toInt string = map fromIntegral (map digitToInt string)
 
-productOfNNumbers :: Integer -> Integer -> [Integer] -> Integer
-productOfNNumbers len multVal list =
-    if (length list) < (fromIntegral len)
-    then multVal
-    else if newVal > multVal
-    then productOfNNumbers len newVal (tail list)
-    else productOfNNumbers len multVal (tail list)
-    where newVal = foldl (*) 1 (lastN (fromIntegral len) (reverse list))
+sanitizeSeries :: [Integer] -> Integer -> [[Integer]] -> [[Integer]]
+sanitizeSeries numList chunkSize resultBucket =
+    if (length numList) < (fromIntegral chunkSize)
+    then resultBucket
+    else if not (elem 0 chunk)
+    then sanitizeSeries (tail numList) chunkSize (resultBucket ++ [chunk] )
+    else sanitizeSeries (tail numList) chunkSize (resultBucket)
+    where chunk = take 13 numList
+
+productOfNumberLists :: [[Integer]] -> Integer -> Integer
+productOfNumberLists numLists multVal = if (length numLists) == 0
+     then multVal
+     else if newVal > multVal
+     then productOfNumberLists (tail numLists) newVal
+     else productOfNumberLists (tail numLists) multVal
+     where newVal = foldl (*) 1 (head numLists)
+
+productOfNumbers :: Integer -> Integer -> [Integer] -> Integer
+productOfNumbers chunkSize multVal numList = productOfNumberLists (sanitizeSeries numList chunkSize []) 0
 
 pythagoreanTripletFinder :: Integer -> [[Integer]]
 pythagoreanTripletFinder sum = [[a,b,c] | m <- [2..limit],
-                        n <- [1..(m-1)],
-                        let a = m^2 - n^2,
-                        let b = 2*m*n,
-                        let c = m^2 + n^2,
-                        a+b+c==sum]
-                        where limit = (floor . sqrt . fromIntegral) sum
+    n <- [1..(m-1)],
+    let a = m^2 - n^2,
+    let b = 2*m*n,
+    let c = m^2 + n^2,
+    a+b+c==sum]
+    where limit = (floor . sqrt . fromIntegral) sum
 
 pythagoreanTripletProduct :: Integer -> Integer
 pythagoreanTripletProduct sum = product . head . pythagoreanTripletFinder $ sum
@@ -132,8 +143,3 @@ sumOfPrimes limit = foldl (+) 0 (takeWhile (<limit) primes)
 
 nThPrime :: Integer -> Integer
 nThPrime number = primes !! fromIntegral (number-1)
-
-
-
-
-
