@@ -176,13 +176,29 @@ main = hspec $ do
         it "should give 104743 for 10001" $ do
             nThPrime 10001 `shouldBe` 104743
 
+    describe "slice" $ do
+
+        it "should give [1, 2] for [1, 1, 1, 2, 4, 5] 2 2" $ do
+            slice [1, 1, 1, 2, 4, 5] 2 2 `shouldBe` [1, 2]
+
+        it "should give [1, 2] for [1, 1, 0, 1, 2, 4, 5] 3 2" $ do
+            slice [1, 1, 0, 1, 2, 4, 5] 3 2 `shouldBe` [1, 2]
+
+    describe "multipleOfChunkOfAList" $ do
+
+        it "should give 4 for [1,2,2,3,4,5,5,6] 1 2" $ do
+            multipleOfChunkOfAList [1,2,2,3,4,5,5,6] 1 2 `shouldBe` 4
+
+        it "should give 12 for [1,2,2,3,4,5,5,6] 1 3" $ do
+            multipleOfChunkOfAList [1,2,2,3,4,5,5,6] 1 3 `shouldBe` 12
+
     describe "productOfNumbers" $ do
 
         it "should give 5832 for given string and 4" $ do
-            productOfNumbers 4 0 (toInt bigNum) `shouldBe` 5832
+            productOfNumbers (toInt bigNum) 4 0 `shouldBe` 5832
 
         it "should give 23514624000 for given string and 13" $ do
-            productOfNumbers 13 0 (toInt bigNum) `shouldBe` 23514624000
+            productOfNumbers (toInt bigNum) 13 0 `shouldBe` 23514624000
 
     describe "pythagoreanTripletFinder" $ do
 
@@ -200,9 +216,9 @@ main = hspec $ do
         it "should give 17 for 10" $ do
             sumOfPrimes 10 `shouldBe` 17
 
-        it "should give 37550402023 for 2000000" $ do
-            sumOfPrimes 2000000 `shouldBe` 142913828922
-
-    describe "sumOfPrimes" $ do
-        it "should give blah for blah" $ do
-            sanitizeSeries (toInt "123456023") 4 [] `shouldBe` [[1, 2, 3, 4], [2, 3, 4, 5], [3, 4, 5, 6]]
+--        it "should give 37550402023 for 2000000" $ do
+--            sumOfPrimes 2000000 `shouldBe` 142913828922
+--
+--    describe "sumOfPrimes" $ do
+--        it "should give blah for blah" $ do
+--            sanitizeSeries (toInt "123456023") 4 [] `shouldBe` [[1, 2, 3, 4], [2, 3, 4, 5], [3, 4, 5, 6]]

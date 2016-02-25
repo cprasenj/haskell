@@ -117,8 +117,50 @@ productOfNumberLists numLists multVal = if (length numLists) == 0
      else productOfNumberLists (tail numLists) multVal
      where newVal = foldl (*) 1 (head numLists)
 
-productOfNumbers :: Integer -> Integer -> [Integer] -> Integer
-productOfNumbers chunkSize multVal numList = productOfNumberLists (sanitizeSeries numList chunkSize []) 0
+--productOfNumbers :: Integer -> Integer -> [Integer] -> Integer
+--productOfNumbers chunkSize multVal numList = productOfNumberLists (sanitizeSeries numList chunkSize []) 0
+
+findNextElm :: [Integer] -> Integer -> Integer -> Integer
+findNextElm numList index limit =
+    if nextIndex > limit && element == 0
+    then 1
+    else element
+    where element = numList !! (fromIntegral index)
+          nextIndex = succ index
+
+multValForCurrentFrame :: [Integer] -> Integer -> Integer -> Integer
+multValForCurrentFrame numList index frameSize = foldl (*) 1 (take (fromIntegral (pred frameSize)) numList)
+
+findNextIndexOfNonZeroValue :: [Integer] -> Integer -> Integer
+findNextIndexOfNonZeroValue numList frameIndex =
+    if numList !! (fromIntegral frameIndex) == 0
+    then succ frameIndex
+    else findNextIndexOfNonZeroValue numList (pred frameIndex)
+
+slice :: [Integer] -> Integer -> Integer -> [Integer]
+slice numList start limit  = take (fromIntegral limit) (drop (fromIntegral start) numList)
+
+multipleOfChunkOfAList :: [Integer] -> Integer -> Integer -> Integer
+multipleOfChunkOfAList numList frameIndex limit = foldl (*) 1 (slice numList frameIndex limit)
+
+multiplier :: [Integer] -> Integer -> Integer -> Integer -> Integer -> Integer -> Integer
+multiplier numberList limit frameSize multVal currentVal frameIndex =
+    if (frameSize + frameIndex) > limit
+    then multVal
+    else if currentMultVal == 0
+    then multiplier numberList limit frameSize multVal (multipleOfChunkOfAList numberList (findNextIndexOfNonZeroValue numberList frameIndex) (pred limit)) (findNextIndexOfNonZeroValue numberList frameIndex)
+    else if currentMultVal > multVal
+    then multiplier numberList limit frameSize currentMultVal currentVal nextIndex
+    else multiplier numberList limit frameSize multVal currentVal nextIndex
+    where currentMultVal = currentVal * (numberList !! ((fromIntegral frameIndex) + (fromIntegral frameSize) - 1))
+          currentVal = currentMultVal `div` lastElementForCurrentFrame
+          nextIndex = succ frameIndex
+          lastElementForCurrentFrame = findNextElm numberList frameIndex limit
+
+productOfNumbers :: [Integer] -> Integer -> Integer -> Integer
+productOfNumbers numberList frameSize multVal = multiplier numberList (fromIntegral (length numberList)) frameSize currentMultVal currentValForNextIter 1
+    where currentMultVal = foldl (*) 1 (take (fromIntegral frameSize) numberList)
+          currentValForNextIter = currentMultVal `div` numberList !! (fromIntegral (pred frameSize))
 
 pythagoreanTripletFinder :: Integer -> [[Integer]]
 pythagoreanTripletFinder sum = [[a,b,c] | m <- [2..limit],
