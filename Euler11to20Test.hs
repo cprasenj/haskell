@@ -44,3 +44,27 @@ main = hspec $ do
 
         it "should give [[1, 2], [2, 3], [3, 4], [4, 5], [5, 6]] for [1, 2, 3, 4, 5, 6] 2" $ do
             createLinearChunks [1, 2, 3, 4, 5, 6] 2 `shouldBe` [[1, 2], [2, 3], [3, 4], [4, 5], [5, 6]]
+            createLinearChunks [1, 2, 3, 4, 4, 5, 6] 2 `shouldBe` [[1, 2], [2, 3], [3, 4], [4, 4], [4, 5], [5, 6]]
+
+    describe "findLargestMultiple" $ do
+
+        it "should give 3 for [[1], [2], [3]]" $ do
+            findLargestMultiple [[1], [2], [3]] `shouldBe` 3
+
+        it "should give 30 for findLargestMultiple (createLinearChunks [1, 2, 3, 4, 5, 6] 2)" $ do
+            findLargestMultiple (createLinearChunks [1, 2, 3, 4, 5, 6] 2) `shouldBe` 30
+            findLargestMultiple (createLinearChunks [1, 0, 0, 0,  2, 3, 4, 0, 5, 0, 0, 0,  6, 7, 0] 2) `shouldBe` 42
+
+    describe "findLargestLinearMultiple" $ do
+
+        it "should give 30 for findLargestLinearMultiple [1, 2, 3, 4, 5, 6] 2 0 1 1" $ do
+            findLargestLinearMultiple [1, 2, 3, 4, 5, 6] 2 0 1 0 `shouldBe` 30
+
+        it "should give 42 for findLargestLinearMultiple [1, 2, 3, 4, 5, 6, 7] 2 0 1 1" $ do
+            findLargestLinearMultiple [1, 2, 3, 4, 5, 6, 7] 2 0 1 0 `shouldBe` 42
+
+        it "should give 42 for findLargestLinearMultiple [1, 2, 3, 4, 5, 6, 7, 0] 2 0 1 1" $ do
+            findLargestLinearMultiple [1, 2, 3, 4, 5, 6, 7, 0] 2 0 1 0 `shouldBe` 42
+
+        it "should give 42 for findLargestLinearMultiple [1, 0, 0, 0,  2, 3, 4, 0, 5,0, 0, 0,  6, 7, 0] 2 0 1 1" $ do
+            findLargestLinearMultiple [1, 0, 0, 0,  2, 3, 4, 0, 5,0, 0, 0,  6, 7, 0] 2 0 1 0 `shouldBe` 42
