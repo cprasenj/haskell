@@ -26,7 +26,6 @@ createChunkForInterval list chunkSize gridLength resultContainer =
     then resultContainer
     else createChunkForInterval (drop gridLength list) (pred chunkSize) gridLength resultContainer ++ [head list]
 
-
 createChunksVertically :: [Int] -> Int -> Int -> [[Int]] -> [[Int]]
 createChunksVertically list chunkSize gridLength resultContainer =
     if chunkSize <= 0
@@ -39,11 +38,28 @@ createChunksVertically list chunkSize gridLength resultContainer =
     where listHead = head list
           restOfList = tail list
 
+createChunksDiagonally :: [Int] -> Int -> Int -> [[Int]] -> [[Int]]
+createChunksDiagonally list chunkSize gridLength resultContainer =
+    if chunkSize <= 0
+    then resultContainer
+    else if length list < chunkSize
+    then resultContainer
+    else if listHead == 0
+    then createChunksDiagonally restOfList chunkSize gridLength resultContainer
+    else createChunksDiagonally restOfList chunkSize gridLength resultContainer
+        ++ [createChunkForInterval list chunkSize (succ gridLength) []]
+        ++ [createChunkForInterval list chunkSize (pred gridLength) []]
+    where listHead = head list
+          restOfList = tail list
+
 createLinearChunks :: [Int] -> Int -> [[Int]]
-createLinearChunks list chunkSize = createChunksHorizontally list chunkSize []
+createLinearChunks list chunkSize = filter (\x -> length x == chunkSize) (createChunksHorizontally list chunkSize [])
 
 createVerticalChunks :: [Int] -> Int -> Int -> [[Int]]
-createVerticalChunks list chunkSize gridLength = createChunksVertically list chunkSize gridLength []
+createVerticalChunks list chunkSize gridLength = filter (\x -> length x == chunkSize) (createChunksVertically list chunkSize gridLength [])
+
+createDiagonalChunks :: [Int] -> Int -> Int -> [[Int]]
+createDiagonalChunks list chunkSize gridLength = filter (\x -> length x == chunkSize) (createChunksDiagonally list chunkSize gridLength [])
 
 findLargestMultiple :: [[Int]] -> Int
 findLargestMultiple [] = 0
@@ -67,3 +83,9 @@ findLargestLinearMultiple list chunkSize currentIndex initialVal maxVal =
             then initialVal
             else list !! startingChunkIndex
           nextInitialVal = multiple `div` chunkHead
+
+largestProduct :: [Int] -> Int -> Int -> Int
+largestProduct list chunkSize gridLength= maximum [
+    (maximum (map (\x -> foldl (*) 1 x) (createLinearChunks list chunkSize))),
+    (maximum (map (\x -> foldl (*) 1 x) (createVerticalChunks list chunkSize gridLength))),
+    (maximum (map (\x -> foldl (*) 1 x) (createDiagonalChunks list chunkSize gridLength)))]
