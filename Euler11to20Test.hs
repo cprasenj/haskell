@@ -71,3 +71,8 @@ main = hspec $ do
 
         it "should give 42 for findLargestLinearMultiple [1, 0, 0, 0,  2, 3, 4, 0, 5,0, 0, 0,  6, 7, 0] 2 0 1 1" $ do
             findLargestLinearMultiple [1, 0, 0, 0,  2, 3, 4, 0, 5,0, 0, 0,  6, 7, 0] 2 0 1 0 `shouldBe` 42
+
+    describe "createVerticalChunks" $ do
+
+        it "should give [[1, 5], [2, 6], [3, 7], [4, 8]] for createVerticalChunks [1, 2, 3, 4, 5, 6, 7, 8] 2 4" $ do
+            areEqual (createVerticalChunks [1, 2, 3, 4, 5, 6, 7, 8] 2 4) [[1, 5], [2, 6], [3, 7], [4, 8]] `shouldBe` True
