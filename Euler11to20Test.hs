@@ -5,6 +5,9 @@ import Test.Hspec
 import Test.QuickCheck
 import Control.Exception (evaluate)
 import Euler11to20
+import Data.List
+
+areEqual list1 list2 = sort list1 == sort list1
 
 main :: IO ()
 main = hspec $ do
@@ -40,11 +43,11 @@ main = hspec $ do
             createLinearChunks [1, 2] 3 `shouldBe` []
 
         it "should give [[1, 2], [2, 3]] for [1, 2, 3] 2" $ do
-            createLinearChunks [1, 2, 3] 2 `shouldBe` [[1, 2], [2, 3]]
+            areEqual (createLinearChunks [1, 2, 3] 2) [[1, 2], [2, 3]] `shouldBe` True
 
         it "should give [[1, 2], [2, 3], [3, 4], [4, 5], [5, 6]] for [1, 2, 3, 4, 5, 6] 2" $ do
-            createLinearChunks [1, 2, 3, 4, 5, 6] 2 `shouldBe` [[1, 2], [2, 3], [3, 4], [4, 5], [5, 6]]
-            createLinearChunks [1, 2, 3, 4, 4, 5, 6] 2 `shouldBe` [[1, 2], [2, 3], [3, 4], [4, 4], [4, 5], [5, 6]]
+            areEqual (createLinearChunks [1, 2, 3, 4, 5, 6] 2) [[1, 2], [2, 3], [3, 4], [4, 5], [5, 6]] `shouldBe` True
+            areEqual (createLinearChunks [1, 2, 3, 4, 4, 5, 6] 2) [[1, 2], [2, 3], [3, 4], [4, 4], [4, 5], [5, 6]] `shouldBe` True
 
     describe "findLargestMultiple" $ do
 

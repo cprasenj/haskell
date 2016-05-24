@@ -9,14 +9,26 @@ functionRepeater list listOperator repeatTime =
     then list
     else functionRepeater (listOperator list) listOperator (pred repeatTime)
 
-createLinearChunks :: [Int] -> Int -> [[Int]]
-createLinearChunks list chunkSize =
-    if chunkSize <= 0
-    then []
-    else functionRepeater (map (\x -> take chunkSize (drop (fromJust (elemIndex x list)) list)) list) init (pred chunkSize)
-
--- createChunks :: [Int] -> Int ->
 -- createLinearChunks :: [Int] -> Int -> [[Int]]
+-- createLinearChunks list chunkSize =
+--     if chunkSize <= 0
+--     then []
+--     else functionRepeater (map (\x -> take chunkSize (drop (fromJust (elemIndex x list)) list)) list) init (pred chunkSize)
+
+createChunks :: [Int] -> Int -> [[Int]] -> [[Int]]
+createChunks list chunkSize resultContainer =
+    if chunkSize <= 0
+    then resultContainer
+    else if length list < chunkSize
+    then functionRepeater resultContainer init (pred chunkSize)
+    else if listHead == 0
+    then createChunks restOfList chunkSize resultContainer
+    else createChunks restOfList chunkSize resultContainer ++ [take chunkSize list]
+    where listHead = head list
+          restOfList = tail list
+
+createLinearChunks :: [Int] -> Int -> [[Int]]
+createLinearChunks list chunkSize = createChunks list chunkSize []
 
 
 findLargestMultiple :: [[Int]] -> Int
