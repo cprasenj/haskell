@@ -1,10 +1,10 @@
-module Euler11to20Test where
+module Euler11Test where
 
 
 import Test.Hspec
 import Test.QuickCheck
 import Control.Exception (evaluate)
-import Euler11to20
+import Euler11
 import Data.List
 
 areEqual list1 list2 = sort list1 == sort list1

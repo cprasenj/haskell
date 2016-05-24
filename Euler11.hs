@@ -1,4 +1,4 @@
-module Euler11to20 where
+module Euler11 where
 import Data.List
 import Data.Char (digitToInt)
 
