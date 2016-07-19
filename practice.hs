@@ -16,16 +16,16 @@ findKthElement [] y = error "blah"
 findKthElement (x:_) 1 = x
 findKthElement (x:xs) k
 	| k<=0 = error "IndexError"
-	| otherwise = findKthElement xs (k-1)
+	| otherwise = findKthElement xs $ pred k
 
 findELementCount :: [a] -> Integer
 findELementCount []  = 0
-findELementCount (x:xs) = 1 + findELementCount xs
+findELementCount (x:xs) = succ $ findELementCount xs
 
 reverseList :: [a] -> [a]
 reverseList [x]  = [x]
 reverseList [] = []
-reverseList (x:xs) = reverseList xs ++ (x:[])
+reverseList (x:xs) = reverseList xs ++ [x]
 
 isEqualList :: (Ord a) => [a] -> [a] -> Bool
 isEqualList [] [] = True
@@ -58,7 +58,7 @@ createPack [] a = []
 createPack x a
 	|length(unique x) == 1 = x
 createPack (x:xs) a
-	|x==a = createPack (xs ++ (x:[])) a
+	|x==a = createPack (xs ++ [x]) a
 	|otherwise = createPack xs a
 
 pack :: (Ord a) => [a] -> [[a]]

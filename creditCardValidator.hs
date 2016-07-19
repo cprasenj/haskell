@@ -8,7 +8,7 @@ toDigits x
   |otherwise = toDigits (x `div` 10) ++ [x `mod` 10]
 
 toDigitsRev :: Integer -> [Integer]
-toDigitsRev x = reverseList (toDigits x)
+toDigitsRev x = reverseList . toDigits $ x
 
 doubleEveryOther :: [Integer] -> [Integer]
 doubleEveryOther [] = []
@@ -18,11 +18,11 @@ doubleEveryOther (x:xs) = doubleEveryOther (tail xs) ++ [head xs] ++ [x*2]
 sumDigitsOfANumber :: Integer -> Integer
 sumDigitsOfANumber a
   |a < 10 = a
-  |otherwise = (a `div` 10) + (a `mod` 10)
+  |otherwise = foldl1 (+) $ [(div a), (mod a)] <*> [10]
 
 sumDigits :: [Integer] -> Integer
 sumDigits [] = 0
 sumDigits (a:as) = sumDigitsOfANumber(a) + sumDigits(as)
 
 validate :: Integer -> Bool
-validate a = ((sumDigits (doubleEveryOther (toDigits a))) `mod` 10) == 0
+validate a = (sumDigits . doubleEveryOther . toDigits $ a) `mod` 10 == 0

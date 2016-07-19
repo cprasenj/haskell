@@ -3,96 +3,82 @@ import Data.List
 import Data.Char (digitToInt)
 
 multipleOf3Or5 :: Integer -> Bool
-multipleOf3Or5 a =
-    if (a `mod` 3 == 0) || (a `mod` 5 == 0)
-    then True
-    else False
+multipleOf3Or5 a = or $ [(== 0).(mod a)] <*> [3 , 5]
 
 multipleOf17Or19 :: Integer -> Bool
-multipleOf17Or19 a =
-    if (a `mod` 17 == 0) || (a `mod` 19 == 0)
-    then True
-    else False
+multipleOf17Or19 a =  or $ [(== 0).(mod a)] <*> [17 , 19]
 
 sumOfMultiPlesInAGivenRangeUnderACondition :: Integer -> Integer -> (Integer -> Bool) -> Integer
-sumOfMultiPlesInAGivenRangeUnderACondition first second predicate =
-    if first > second
-    then 0
-    else foldl (+) 0 (filter predicate [first..second])
+sumOfMultiPlesInAGivenRangeUnderACondition first second predicate
+    |first > second = 0
+    |otherwise = foldl1 (+) (filter predicate [first..second])
 
 fibonachi :: Integer -> Integer -> Integer ->[Integer]
-fibonachi first second limit =
-    if first > second || limit <= first
-    then []
-    else [first] ++ fibonachi second (first + second) limit
+fibonachi first second limit
+    |or $ [first > second, limit <= first] = []
+    |otherwise = first : fibonachi second (first + second) limit
 
 isEven :: Integer -> Bool
-isEven number = number `mod` 2 == 0
+isEven number = ((==) 0).(mod number) $ 2
 
 createSumOfFilteredList :: Integer -> Integer -> Integer -> (Integer -> Integer-> Integer -> [Integer]) -> (Integer -> Bool) -> Integer
-createSumOfFilteredList start end limit listCreator predicate  = foldl (+) 0 (filter predicate (listCreator start end limit))
+createSumOfFilteredList start end limit listCreator predicate  = foldl1 (+) (filter predicate (listCreator start end limit))
 
 sieve :: (Integral a) => [a] -> [a]
 sieve (n:ns) = n : sieve ns'
-  where ns' = filter ((/= 0) . flip rem n) (n:ns)
+  where ns' = filter ((/= 0).flip rem n) (n:ns)
 
 isDivisible :: (Integral a) => a -> a -> Bool
-isDivisible number1 number2 = number1 `mod` number2 == 0
+isDivisible n1 n2 = (== 0).(mod n1) $ n2
 
 
 largestPrimeFactor :: Integer -> Integer
-largestPrimeFactor number = head (reverse (filter predicate (takeWhile (< round (sqrt(fromIntegral number)/2)) (sieve [2..]))))
+largestPrimeFactor number = head.reverse.(filter predicate) $ (takeWhile (< (round.sqrt.(/2).fromIntegral $ number)) (sieve [2..]))
                             where predicate = isDivisible number
 
 reverseInt :: Integer -> Integer
-reverseInt x = (*) (signum x) . read . reverse . show . abs  $ x
+reverseInt x = (*) (signum x).read.reverse.show.abs  $ x
 
 isPalindrome :: Integer -> Bool
-isPalindrome number = number == reverseInt number
+isPalindrome number = (== number).reverseInt $ number
 
 palindromeFinder :: Integer -> Integer -> Integer -> [Integer] -> [Integer]
-palindromeFinder first second limit palindromeList =
-    if first == 1 && second == 1
-    then palindromeList
-    else if second == 1 && isPalindrome potentialPalindrome
-    then palindromeFinder (first-1) limit limit (palindromeList ++ [potentialPalindrome])
-    else if second == 1
-    then palindromeFinder (first-1) limit limit palindromeList
-    else if isPalindrome potentialPalindrome
-    then palindromeFinder first (second-1) limit (palindromeList ++ [potentialPalindrome])
-    else palindromeFinder first (second-1) limit palindromeList
+palindromeFinder first second limit palindromeList
+    |and $ [(== 1)] <*> [first, second] = palindromeList
+    |and $ [second == 1, isPalindrome potentialPalindrome] = palindromeFinder (first-1) limit limit (potentialPalindrome : palindromeList)
+    |second == 1 = palindromeFinder (first-1) limit limit palindromeList
+    |isPalindrome potentialPalindrome = palindromeFinder first (second-1) limit (palindromeList ++ [potentialPalindrome])
+    |otherwise = palindromeFinder first (second-1) limit palindromeList
     where potentialPalindrome = first * second
 
 largestPalindromeProduct :: Integer -> Integer
-largestPalindromeProduct number = head (reverse (sort (palindromeFinder number number number [])))
+largestPalindromeProduct number = head.reverse.sort $ (palindromeFinder number number number [])
 
 ghc :: Integer -> Integer -> Integer
-ghc number1 number2 =
-    if number2 == 0
-    then number1
-    else ghc number2 (number1 `mod` number2)
+ghc n1 n2
+    |n2 == 0 = n1
+    |otherwise = ghc n2 (n1 `mod` n2)
 
 lcm :: Integer -> Integer -> Integer
 lcm number1 number2 = round ((fromInteger (number1 * number2)) / (fromInteger (ghc number1 number2)))
 
 smallestNumberDivisibleByRange :: Integer -> Integer -> Integer
-smallestNumberDivisibleByRange limit initial =
-    if limit == 1
-    then initial
-    else smallestNumberDivisibleByRange (limit-1) (Prelude.lcm limit initial)
+smallestNumberDivisibleByRange limit initial
+    |limit == 1 = initial
+    |otherwise = smallestNumberDivisibleByRange (pred limit) (Prelude.lcm limit initial)
 
 squereAndSum :: Integer -> Integer -> Integer
 squereAndSum total number = total + (number * number)
 
 sumOfSquere :: Integer -> Integer
-sumOfSquere number = foldl squereAndSum 0 [1..number]
+sumOfSquere number = foldl1 squereAndSum [1..number]
 
 squereOfSum :: Integer -> Integer
 squereOfSum number = sum * sum
-                    where sum = foldl (+) 0 [1..number]
+                    where sum = foldl1 (+) [1..number]
 
 diffOfSumOfSquereAndSquereOfSum :: Integer -> Integer
-diffOfSumOfSquereAndSquereOfSum number = (squereOfSum number) - (sumOfSquere number)
+diffOfSumOfSquereAndSquereOfSum number = foldl1 (-) $ [squereOfSum, sumOfSquere] <*> [number]
 
 lastN :: Int -> [a] -> [a]
 lastN n xs = drop (length xs - n) xs
@@ -101,66 +87,59 @@ toInt :: [Char] -> [Integer]
 toInt string = map fromIntegral (map digitToInt string)
 
 sanitizeSeries :: [Integer] -> Integer -> [[Integer]] -> [[Integer]]
-sanitizeSeries numList chunkSize resultBucket =
-    if (length numList) < (fromIntegral chunkSize)
-    then resultBucket
-    else if not (elem 0 chunk)
-    then sanitizeSeries (tail numList) chunkSize (resultBucket ++ [chunk] )
-    else sanitizeSeries (tail numList) chunkSize (resultBucket)
+sanitizeSeries numList chunkSize resultBucket
+    |(<) (length numList) (fromIntegral chunkSize) = resultBucket
+    |not (elem 0 chunk) = sanitizeSeries (tail numList) chunkSize (chunk : resultBucket)
+    |otherwise = sanitizeSeries (tail numList) chunkSize (resultBucket)
     where chunk = take (fromIntegral chunkSize) numList
 
 productOfNumberLists :: [[Integer]] -> Integer -> Integer
-productOfNumberLists numLists multVal = if (length numLists) == 0
-     then multVal
-     else if newVal > multVal
-     then productOfNumberLists (tail numLists) newVal
-     else productOfNumberLists (tail numLists) multVal
-     where newVal = foldl (*) 1 (head numLists)
-
---productOfNumbers :: Integer -> Integer -> [Integer] -> Integer
---productOfNumbers chunkSize multVal numList = productOfNumberLists (sanitizeSeries numList chunkSize []) 0
+productOfNumberLists numLists multVal
+    | length numLists == 0 = multVal
+    | newVal > multVal = productOfNumberLists (tail numLists) newVal
+    | otherwise = productOfNumberLists (tail numLists) multVal
+     where newVal = foldl1 (*) (head numLists)
 
 findNextElm :: [Integer] -> Integer -> Integer -> Integer
-findNextElm numList index limit =
-    if nextIndex > limit && element == 0
-    then 1
-    else element
+findNextElm numList index limit
+    |nextIndex > limit && element == 0 = 1
+    |otherwise =  element
     where element = numList !! (fromIntegral index)
           nextIndex = succ index
 
 multValForCurrentFrame :: [Integer] -> Integer -> Integer -> Integer
-multValForCurrentFrame numList index frameSize = foldl (*) 1 (take (fromIntegral (pred frameSize)) numList)
+multValForCurrentFrame numList index frameSize = foldl1 (*) (take (fromIntegral.pred $ frameSize) numList)
 
 findNextIndexOfNonZeroValue :: [Integer] -> Integer -> Integer
-findNextIndexOfNonZeroValue numList frameIndex =
-    if numList !! (fromIntegral frameIndex) == 0
-    then succ frameIndex
-    else findNextIndexOfNonZeroValue numList (pred frameIndex)
+findNextIndexOfNonZeroValue numList frameIndex
+    |numList !! (fromIntegral frameIndex) == 0 = succ frameIndex
+    |otherwise = findNextIndexOfNonZeroValue numList (pred frameIndex)
 
 slice :: [Integer] -> Integer -> Integer -> [Integer]
-slice numList start limit  = take (fromIntegral limit) (drop (fromIntegral start) numList)
+slice numList start limit  = take (fromIntegral limit).(drop.fromIntegral $ start) $ numList
 
 multipleOfChunkOfAList :: [Integer] -> Integer -> Integer -> Integer
-multipleOfChunkOfAList numList frameIndex limit = foldl (*) 1 (slice numList frameIndex limit)
+multipleOfChunkOfAList numList frameIndex limit = foldl1 (*) (slice numList frameIndex limit)
 
 multiplier :: [Integer] -> Integer -> Integer -> Integer -> Integer -> Integer -> Integer
-multiplier numberList limit frameSize multVal currentVal frameIndex =
-    if (frameSize + frameIndex) > limit
-    then multVal
-    else if currentMultVal == 0
-    then multiplier numberList limit frameSize multVal (multipleOfChunkOfAList numberList (findNextIndexOfNonZeroValue numberList frameIndex) (pred limit)) (findNextIndexOfNonZeroValue numberList frameIndex)
-    else if currentMultVal > multVal
-    then multiplier numberList limit frameSize currentMultVal currentVal nextIndex
-    else multiplier numberList limit frameSize multVal currentVal nextIndex
-    where currentMultVal = currentVal * (numberList !! ((fromIntegral frameIndex) + (fromIntegral frameSize) - 1))
+multiplier numberList limit frameSize multVal currentVal frameIndex
+    |(frameSize + frameIndex) > limit = multVal
+    |currentMultVal == 0 = multiplier
+      numberList
+      limit frameSize
+      multVal (multipleOfChunkOfAList numberList (findNextIndexOfNonZeroValue numberList frameIndex) (pred limit))
+      (findNextIndexOfNonZeroValue numberList frameIndex)
+    |currentMultVal > multVal = multiplier numberList limit frameSize currentMultVal currentVal nextIndex
+    |otherwise =  multiplier numberList limit frameSize multVal currentVal nextIndex
+    where currentMultVal = currentVal * (numberList !! ((fromIntegral frameIndex) + pred (fromIntegral frameSize)))
           currentVal = currentMultVal `div` lastElementForCurrentFrame
           nextIndex = succ frameIndex
           lastElementForCurrentFrame = findNextElm numberList frameIndex limit
 
 productOfNumbers :: [Integer] -> Integer -> Integer -> Integer
 productOfNumbers numberList frameSize multVal = multiplier numberList (fromIntegral (length numberList)) frameSize currentMultVal currentValForNextIter 1
-    where currentMultVal = foldl (*) 1 (take (fromIntegral frameSize) numberList)
-          currentValForNextIter = currentMultVal `div` numberList !! (fromIntegral (pred frameSize))
+    where currentMultVal = foldl1 (*) (take (fromIntegral frameSize) numberList)
+          currentValForNextIter = currentMultVal `div` (numberList !! (fromIntegral (pred frameSize)))
 
 pythagoreanTripletFinder :: Integer -> [[Integer]]
 pythagoreanTripletFinder sum = [[a,b,c] | m <- [2..limit],
@@ -169,10 +148,10 @@ pythagoreanTripletFinder sum = [[a,b,c] | m <- [2..limit],
     let b = 2*m*n,
     let c = m^2 + n^2,
     a+b+c==sum]
-    where limit = (floor . sqrt . fromIntegral) sum
+    where limit = (floor.sqrt.fromIntegral) sum
 
 pythagoreanTripletProduct :: Integer -> Integer
-pythagoreanTripletProduct sum = product . head . pythagoreanTripletFinder $ sum
+pythagoreanTripletProduct sum = product.head.pythagoreanTripletFinder $ sum
 
 primes :: [Integer]
 primes = 2: 3: sieve (tail primes) [5,7..]
@@ -181,7 +160,7 @@ primes = 2: 3: sieve (tail primes) [5,7..]
                   where (h,~(_:t)) = span (< p*p) xs
 
 sumOfPrimes :: Integer -> Integer
-sumOfPrimes limit = foldl (+) 0 (takeWhile (<limit) primes)
+sumOfPrimes limit = foldl1 (+) (takeWhile (<limit) primes)
 
 nThPrime :: Integer -> Integer
 nThPrime number = primes !! fromIntegral (number-1)

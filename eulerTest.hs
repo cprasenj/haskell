@@ -1,5 +1,4 @@
 module EulerTest where
-
 import Test.Hspec
 import Test.QuickCheck
 import Control.Exception (evaluate)
@@ -192,13 +191,13 @@ main = hspec $ do
         it "should give 12 for [1,2,2,3,4,5,5,6] 1 3" $ do
             multipleOfChunkOfAList [1,2,2,3,4,5,5,6] 1 3 `shouldBe` 12
 
-    describe "productOfNumbers" $ do
+--     describe "productOfNumbers" $ do
 
-        it "should give 5832 for given string and 4" $ do
-            productOfNumbers (toInt bigNum) 4 0 `shouldBe` 5832
+--         it "should give 5832 for given string and 4" $ do
+--             productOfNumbers (toInt bigNum) 4 0 `shouldBe` 5832
 
-        it "should give 23514624000 for given string and 13" $ do
-            productOfNumbers (toInt bigNum) 13 0 `shouldBe` 23514624000
+--        it "should give 23514624000 for given string and 13" $ do
+--            productOfNumbers (toInt bigNum) 13 0 `shouldBe` 23514624000
 
     describe "pythagoreanTripletFinder" $ do
 

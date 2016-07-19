@@ -1,6 +1,4 @@
 module Euler11Test where
-
-
 import Test.Hspec
 import Test.QuickCheck
 import Control.Exception (evaluate)
@@ -94,7 +92,7 @@ main = hspec $ do
                                                 [1, 8, 7], [2, 1, 8]
                                             ] `shouldBe` True
 
-    describe "createDiagonalChunks" $ do
+    describe "largestProduct" $ do
 
-        it "should give [[1, 5], [2, 6], [3, 7], [4, 8]] for createDiagonalChunks [1, 2, 3, 4, 5, 6, 7, 8] 2 4" $ do
+        it "should give [[1, 5], [2, 6], [3, 7], [4, 8]] for largestProduct [1, 2, 3, 4, 5, 6, 7, 8] 2 4" $ do
             largestProduct bigNum 4 20 `shouldBe` 70600674
