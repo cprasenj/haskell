@@ -11,16 +11,18 @@ areEqual list1 list2 = sort list1 == sort list1
 main :: IO ()
 main = hspec $ do
 
-    describe "findDivisors" $ do
+describe "findDivisors" $ do
 
-        it "gives [1, 3] for findDivisors 3 1 []" $ do
-            areEqual (findDivisors 3 1 []) [1, 3] `shouldBe` True
+  it "gives [1, 3] for findDivisors 3" $ do
+    areEqual (findDivisors 3) [1, 3] `shouldBe` True
+  it "gives [1, 3, 9] for findDivisors 9" $ do
+    areEqual (findDivisors 9) [1, 3, 9] `shouldBe` True
+  it "gives [1, 2, 3, 4, 6, 12] for findDivisors 12" $ do
+    areEqual (findDivisors 12) [1, 2, 3, 4, 6, 12] `shouldBe` True
 
-    describe "triangleNumbersWithDivisors" $ do
+describe "triangularNumberWithDivisor" $ do
+  it "gives 28 for 5" $ do
+    triangularNumberWithDivisor 5 `shouldBe` 28
 
-        it "gives [1, 3] for triangleNumbersWithDivisors 3 1 []" $ do
-            triangleNumbersWithDivisors 1 1 6 `shouldBe` 28
---             triangleNumbersWithDivisors 1 6 `shouldBe` 28
---             triangleNumbersWithDivisors 1 20 `shouldBe` 209628
---             triangleNumbersWithDivisors 1 20 `shouldBe` 209628
-            triangleNumbersWithDivisors 1 1 500 `shouldBe` 73920
+  it "gives 28 for 500" $ do
+    triangularNumberWithDivisor 500 `shouldBe` 28
